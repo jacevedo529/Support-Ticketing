@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Repository;
+using Repository.Data;
+using Services;
+using Services.Interfaces;
+using Services.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +13,27 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// DI
+builder.Services.AddSingleton<IJwtTokenUtility, JwtTokenUtility>();
+builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+builder.Services.AddTransient<ISupportService, SupportService>();
+builder.Services.AddTransient<IUserService, UserService>();
+
 // Entity Framework configuration
-builder.Services.AddDbContext<SupportContext>(optionsAction => optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("SupportContext")));
+// Support
+builder.Services.AddDbContext<SupportDbContext>(optionsAction =>
+    optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("SupportContext")));
+builder.Services.AddSingleton(ctx => SqlServerDbContextOptionsExtensions.UseSqlServer(new DbContextOptionsBuilder<SupportDbContext>(),
+        builder.Configuration.GetConnectionString("SupportContext")));
+// Identity
+builder.Services.AddDbContext<IdentityDbContext>(optionsAction =>
+    optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("IdentityContext")));
+builder.Services.AddSingleton(ctx => SqlServerDbContextOptionsExtensions.UseSqlServer(new DbContextOptionsBuilder<IdentityDbContext>(),
+        builder.Configuration.GetConnectionString("IdentityContext")));
+
+
+// EntityFramework diagnostics
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();
 
@@ -20,19 +42,17 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+    app.UseMigrationsEndPoint();
 }
 
-// Create the database
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<SupportContext>();
-    context.Database.EnsureCreated();
-}
+// Seed Data
+SupportDbInitializer.InitializeDatabase(app);
+IdentityDbInitializer.InitializeDatabase(app);
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
