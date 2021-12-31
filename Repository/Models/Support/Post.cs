@@ -6,6 +6,9 @@ namespace Repository
     {
         public Guid Id { get; set; }
         public string Text { get; set; } = default!;
-        public Ticket Ticket { get; } = new Ticket();
+        public Guid CreatedById { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        public Ticket Ticket { get; set; } = new Ticket();
     }
 }
