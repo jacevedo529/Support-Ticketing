@@ -40,7 +40,7 @@ namespace Repository.Data
                     {
                         Title = "Example Ticket",
                         Description = "This is the first ticket",
-                        CreatedById = users.First().Id,
+                        AuthorId = users.First().Id,
                         Status = Status.New,
                         Priority = Priority.Medium
                     },
@@ -48,7 +48,7 @@ namespace Repository.Data
                     {
                         Title = "Example Ticket with Post",
                         Description = "This is the second ticket with Posts",
-                        CreatedById = users.First().Id,
+                        AuthorId = users.First().Id,
                         OwnerId = users.First().Id,
                         Status = Status.New,
                         Priority = Priority.Medium
@@ -64,7 +64,7 @@ namespace Repository.Data
                     {
                         Text = "First Post",
                         CreatedDate = DateTime.Now,
-                        CreatedById = users.First().Id,
+                        AuthorId = users.First().Id,
                         Ticket = tickets.Single(t => t.Number == 2)
                     }
                 };

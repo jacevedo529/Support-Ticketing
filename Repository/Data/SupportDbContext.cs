@@ -21,7 +21,7 @@ namespace Repository.Data
                 entity.Property(t => t.Number).IsRequired().ValueGeneratedOnAdd().HasMaxLength(7);
                 entity.Property(t => t.Title).IsRequired().HasMaxLength(250);
                 entity.Property(t => t.Description).IsRequired().HasMaxLength(2000);
-                entity.Property(t => t.CreatedById).IsRequired();
+                entity.Property(t => t.AuthorId).IsRequired();
                 entity.Property(t => t.CreatedDate).IsRequired().HasDefaultValueSql("getdate()");
                 entity.Property(t => t.OwnerId);
                 entity.Property(t => t.Status).IsRequired();
@@ -37,7 +37,7 @@ namespace Repository.Data
                 entity.HasKey(p => p.Id);
 
                 entity.Property(p => p.Text).IsRequired().HasMaxLength(2000);
-                entity.Property(p => p.CreatedById).IsRequired();
+                entity.Property(p => p.AuthorId).IsRequired();
                 entity.Property(p => p.CreatedDate).IsRequired().HasDefaultValueSql("getdate()");
 
                 entity.HasOne(p => p.Ticket).WithMany(p => p.Posts);
