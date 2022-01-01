@@ -1,0 +1,18 @@
+<h1>Sign In</h1>
+<form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
+    <p>
+        <mat-form-field class="example-form-field" appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput type="text" formControlName="username">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field class="example-form-field" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="text" formControlName="password">
+        </mat-form-field>
+    </p>
+
+    <button mat-raised-button type="submit">Sign In</button>
+    <button mat-raised-button type="button" (click)="onCreateAccount()">Create a New Account</button>
+</form>

@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IJwtTokenUtility, JwtTokenUtility>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<ISupportService, SupportService>();
-builder.Services.AddTransient<IUserService, UserService>();
+//builder.Services.AddTransient<IUserService, UserService>();
 
 // Entity Framework configuration
 // Support

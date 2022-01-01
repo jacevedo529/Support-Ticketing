@@ -43,8 +43,11 @@ namespace Services
                 Username = request.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Id = user.Id,
-                Token = token
+                Token =
+                {
+                    Value = token,
+                    ExpiresIn = 30 // TODO: Use config
+                }
             };
         }
 

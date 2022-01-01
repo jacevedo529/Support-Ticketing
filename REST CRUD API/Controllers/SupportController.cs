@@ -16,17 +16,17 @@ namespace REST_CRUD_API.Controllers
 
         // GET: api/<ValuesController>
         [HttpGet]
-        public IEnumerable<Ticket> Get([FromQuery] Guid authorId, [FromQuery] Guid? owner, [FromQuery] Status? status)
+        public async Task<IEnumerable<Ticket>> Get([FromQuery] Guid authorId, [FromQuery] Guid? owner, [FromQuery] Status? status)
         {
-            var tickets = _supportService.GetTickets(authorId, owner, status);
+            var tickets = await _supportService.GetTicketsAsync(authorId, owner, status);
             return tickets;
         }
 
         // GET api/<ValuesController>/5
         [HttpGet("{number}")]
-        public Ticket Get(int number)
+        public async Task<Ticket> Get(int number)
         {
-            var ticket = _supportService.GetTicketByNumber(number);
+            var ticket = await _supportService.GetTicketByNumberAsync(number);
             return ticket;
         }
 
