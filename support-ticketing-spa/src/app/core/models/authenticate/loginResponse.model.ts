@@ -1,6 +1,6 @@
 import { Token } from "./token.model";
 
-export class AuthResponse {
+export class LoginResponse {
     firstName: string | undefined;
     lastName: string | undefined;
     username: string | undefined;

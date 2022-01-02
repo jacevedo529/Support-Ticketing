@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { AuthRequest } from '../../models/authenticate/authRequest.model';
-import { AuthResponse } from '../../models/authenticate/authResponse.model';
+import { LoginRequest } from '../../models/authenticate/loginRequest.model';
+import { LoginResponse } from '../../models/authenticate/loginResponse.model';
+import { CreateAccountRequest } from '../../models/authenticate/createAccountRequest.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpAuthService {
 
-  private resourceUrl = `${environment.apiHostUrl}/auth`;
+  private resourceUrl = `${environment.apiHostUrl}/Auth`;
 
   constructor(
     private http: HttpClient
   ) { }
 
-  public authenticate(authRequest: AuthRequest) {
-    debugger;
-    return this.http.post<AuthResponse>(this.resourceUrl, authRequest);
+  public authenticate(loginRequest: LoginRequest) {
+    return this.http.post<LoginResponse>(`${this.resourceUrl}/Login`, loginRequest);
   }
 
+  public createAccount(createAccountRequest: CreateAccountRequest) {
+    return this.http.post(`${this.resourceUrl}/Register`, createAccountRequest);
+  }
 }

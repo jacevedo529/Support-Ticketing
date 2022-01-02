@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Data;
+using Repository.Models.Identity;
+using Services.Exceptions;
 using Services.Interfaces;
 using Services.Models;
-using System.Security.Authentication;
 
 namespace Services
 {
@@ -27,23 +28,23 @@ namespace Services
             }
         }
 
-        public LoginResponse Login(LoginRequest request)
+        public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
             using var context = DbContext;
             
             // Verify User exists
-            var user = context.Users.FirstOrDefault(u => u.Username == request.Username && u.Password == request.Password);
-            if (user == null) throw new AuthenticationException($"Could not find the user {request.Username}");
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == request.Email && u.Password == request.Password);
+            if (user == null) throw new AccountNotFoundException($"Could not find the user {request.Email}");
 
             // Generate jwt token
             var token = _jwtTokenUtility.GenerateJwtToken(user);
 
             return new LoginResponse()
             {
-                Username = request.Username,
+                Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Token =
+                Token = new Token()
                 {
                     Value = token,
                     ExpiresIn = 30 // TODO: Use config
@@ -51,11 +52,45 @@ namespace Services
             };
         }
 
-        public bool Logout(LogoutRequest request)
+        public async Task<CreateAccountResponse> CreateAccountAsync(CreateAccountRequest request)
         {
-            throw new NotImplementedException();
+            using var context = DbContext;
+
+            // Verify User doesn't already exist with email and return exception
+            var user = await GetApplicationUserByEmailAsync(request.Email);
+
+            if (user != null)
+                throw new DuplicateAccountException($"Account with email {request.Email} already exists");
+
+            // Create the User
+            var newUser = new ApplicationUser
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Password = request.Password //TODO: HASH
+            };
+            
+            // Add User to DB
+            context.Users.Add(newUser);
+            await context.SaveChangesAsync();
+
+            // Verify user has been added
+            var appUser = await GetApplicationUserByEmailAsync(request.Email);
+
+            if (appUser == null)
+                throw new ApplicationException($"Unable to create an account with email: {request.Email}");
+
+            return new CreateAccountResponse()
+            {
+                Email = appUser.Email
+            };
         }
 
-
+        public async Task<ApplicationUser> GetApplicationUserByEmailAsync(string email)
+        {
+            var context = DbContext;
+            return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 }

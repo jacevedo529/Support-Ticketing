@@ -4,7 +4,7 @@ namespace Services.Interfaces
 {
     public interface IAuthenticationService
     {
-        LoginResponse Login(LoginRequest request);
-        bool Logout(LogoutRequest request);
+        Task<LoginResponse> LoginAsync(LoginRequest request);
+        Task<CreateAccountResponse> CreateAccountAsync(CreateAccountRequest request);
     }
 }

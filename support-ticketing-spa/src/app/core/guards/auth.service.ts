@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { HttpAuthService } from '../http/authentication/http-auth.service';
 import { Token } from '../interfaces/token.interface';
-import { AuthRequest } from '../models/authenticate/authRequest.model';
-import { AuthResponse } from '../models/authenticate/authResponse.model';
+import { LoginRequest } from '../models/authenticate/loginRequest.model';
+import { LoginResponse } from '../models/authenticate/loginResponse.model';
 import { AuthSessionStorageService } from '../services/data-services/auth-session-storage.service';
 
 @Injectable({
@@ -21,19 +22,26 @@ export class AuthService {
     return this.authSessionStorageService.get() !== undefined;
   }
 
-  // store the URL so we can rdirect after logging in
+  // Store the URL so we can rdirect after logging in
   redirectUrl: string | null = null;
 
-  public authenticate(authRequest: AuthRequest) {
-    this.httpAuthService.authenticate(authRequest).subscribe({
-      next: (authResponse: AuthResponse) => {
-        // Store the authResponse
-        this.authSessionStorageService.set(authResponse);
-      },
-      error: (err) => {
-        // TODO: Determine how to best handle errors
-      }
+  public authenticate(loginRequest: LoginRequest): Observable<boolean> {
+    return new Observable((observer) => {
+      this.httpAuthService.authenticate(loginRequest).subscribe({
+        next: (loginResponse: LoginResponse) => {
+          // Store the loginResponse
+          this.authSessionStorageService.set(loginResponse);
+          observer.next(this.isLoggedIn);
+          observer.complete();
+        },
+        error: (err) => {
+          // TODO: Determine how to best handle errors
+
+          observer.error();
+        }
+      });
     });
+
   }
 
   public getAuthToken(): Token | undefined {

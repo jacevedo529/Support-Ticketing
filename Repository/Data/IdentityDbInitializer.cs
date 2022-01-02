@@ -29,7 +29,6 @@ namespace Repository.Data
                         FirstName = "Jose",
                         LastName = "Acevedo",
                         CreatedDate = DateTime.Now,
-                        Username = "Admin",
                         Email = "test@test.com",
                         Password = "Password"
                     }

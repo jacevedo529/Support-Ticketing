@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Services.Exceptions;
 using Services.Interfaces;
 using Services.Models;
 
@@ -16,10 +17,10 @@ namespace REST_CRUD_API.Controllers
         }
 
         // TODO: Handle exceptions
-        [HttpPost]
-        public IActionResult Authenticate(LoginRequest request)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Authenticate(LoginRequest request)
         {
-            LoginResponse? response = default;
+            //LoginResponse? response = default;
 
             //try
             //{
@@ -35,10 +36,41 @@ namespace REST_CRUD_API.Controllers
             //    throw;
             //}
 
-            response = _authService.Login(request);
+            var response = await _authService.LoginAsync(request);
 
             if (response == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(response);
+        }
+
+        // TODO: Handle exceptions
+        [HttpPost("Register")]
+        public async Task<IActionResult> CreateAccountAsync(CreateAccountRequest request)
+        {
+            CreateAccountResponse? response = default;
+
+            try
+            {
+                response = await _authService.CreateAccountAsync(request);
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest();
+            }
+            catch (DuplicateAccountException ex)
+            {
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            //var response = _authService.CreateAccount(request);
+
+            //if (response == null)
+            //    return BadRequest(new { message = "Unable to create account" });
 
             return Ok(response);
         }

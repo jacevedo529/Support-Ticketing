@@ -1,18 +1,40 @@
-<h1>Sign In</h1>
-<form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
-    <p>
-        <mat-form-field class="example-form-field" appearance="fill">
-            <mat-label>Username</mat-label>
-            <input matInput type="text" formControlName="username">
-        </mat-form-field>
-    </p>
-    <p>
-        <mat-form-field class="example-form-field" appearance="fill">
-            <mat-label>Password</mat-label>
-            <input matInput type="text" formControlName="password">
-        </mat-form-field>
-    </p>
-
-    <button mat-raised-button type="submit">Sign In</button>
-    <button mat-raised-button type="button" (click)="onCreateAccount()">Create a New Account</button>
-</form>
+<h1 class="text-center">Log In</h1>
+<div class="container">
+    <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
+        <fieldset>
+            <div class="row">
+                <div class="col-12">
+                    <mat-form-field class="example-form-field" appearance="fill">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="text" formControlName="email">
+                        <mat-error *ngIf="email.hasError('required')">
+                            Email is required
+                        </mat-error>
+                        <mat-error *ngIf="email.hasError('email')">
+                            Email is not valid
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <mat-form-field class="example-form-field" appearance="fill">
+                        <mat-label>Password</mat-label>
+                        <input matInput type="text" formControlName="password">
+                        <mat-error *ngIf="password.hasError('minlength')">
+                            Password requires a minimum of 8 characters
+                        </mat-error>
+                        <mat-error *ngIf="password.hasError('maxlength')">
+                            Password requires a maximum of 100 characters
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="text-end">
+                <button mat-raised-button type="submit" color="primary">Log In</button>
+                <button mat-raised-button type="button" color="accent" (click)="onCreateAccount()">Create a New
+                    Account</button>
+            </div>
+        </fieldset>
+    </form>
+</div>

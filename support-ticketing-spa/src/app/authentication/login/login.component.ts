@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { HttpAuthService } from 'src/app/core/http/authentication/http-auth.service';
-import { AuthRequest } from 'src/app/core/models/authenticate/authRequest.model';
-import { AuthResponse } from 'src/app/core/models/authenticate/authResponse.model';
+import { AuthService } from 'src/app/core/guards/auth.service';
+import { LoginRequest } from 'src/app/core/models/authenticate/loginRequest.model';
+import { MaterialErrorStateMatcher } from 'src/app/core/utilities/MaterialErrorStateMatcher';
 
 @Component({
   selector: 'app-login',
@@ -13,41 +14,54 @@ import { AuthResponse } from 'src/app/core/models/authenticate/authResponse.mode
 })
 export class LoginComponent implements OnInit {
   public loginFormGroup: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(100)])
+    email: new FormControl('', { validators: [Validators.required, Validators.email], updateOn: "blur" }),
+    password: new FormControl('', { validators: [Validators.required, Validators.minLength(8), Validators.maxLength(100)], updateOn: "blur" })
   });
+  public matcher = new MaterialErrorStateMatcher();
 
-  get username(): any { return this.loginFormGroup.get('username'); }
+  get email(): any { return this.loginFormGroup.get('email'); }
   get password(): any { return this.loginFormGroup.get('password'); }
 
   constructor(
+    private title: Title,
     private router: Router,
-    private httpAuthService: HttpAuthService,
+    private authService: AuthService,
     private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
+    this.title.setTitle('Login');
 
+    // If the user is already logged in, redirect to support page
+    if (this.authService.isLoggedIn) {
+      this.router.navigate(['/support']);
+    }
   }
 
   public onCreateAccount() {
-    this.router.navigate(['/register'])
+    this.router.navigate(['/register']);
   }
 
   public onSubmit() {
-    const authRequest: AuthRequest = {
-      username: this.username.value,
+    const loginRequest: LoginRequest = {
+      email: this.email.value,
       password: this.password.value
-    }
+    };
 
     this.spinner.show('primary');
-    this.httpAuthService.authenticate(authRequest).subscribe({
-      next: (value: AuthResponse) => {
-        // Redirect user to Support page
+    this.authService.authenticate(loginRequest).subscribe({
+      next: (isLoggedIn: boolean) => {
+        if (isLoggedIn) {
+          // Redirect user to Support page
+          this.router.navigate(['/support']);
+        }
       },
       error: (err: any) => {
-
+        this.spinner.hide('primary');
+      },
+      complete: () => {
+        this.spinner.hide('primary');
       }
-    })
+    });
   }
 }

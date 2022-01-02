@@ -19,7 +19,6 @@ namespace Repository.Data
 
                 entity.Property(au => au.FirstName).IsRequired().HasMaxLength(100);
                 entity.Property(au => au.LastName).IsRequired().HasMaxLength(100);
-                entity.Property(au => au.Username).IsRequired().HasMaxLength(100);
                 entity.Property(au => au.Email).IsRequired().HasMaxLength(100);
                 entity.Property(au => au.Password).IsRequired().HasMaxLength(100);
 

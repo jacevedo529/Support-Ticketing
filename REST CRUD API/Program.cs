@@ -55,6 +55,13 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+var origins = builder.Configuration["CorsOrigins"];
+app.UseCors(builder => builder
+    .WithOrigins(origins)
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .SetPreflightMaxAge(TimeSpan.FromMinutes(10)));
+
 app.MapControllers();
 
 app.Run();
