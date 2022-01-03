@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
+import { TwoColumnComponent } from './components/layouts/two-column/two-column.component';
 
 // Imported and Exported collections
 const modules = [
@@ -19,18 +20,21 @@ const modules = [
   MatIconModule,
   NgxSpinnerModule
 ];
-const components = [];
+const components = [
+  TwoColumnComponent
+];
 const pipes = [];
 
 @NgModule({
   declarations: [
-
+    TwoColumnComponent
   ],
   imports: [
     modules
   ],
   exports: [
-    modules
+    modules,
+    components
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }

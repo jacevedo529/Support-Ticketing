@@ -1,0 +1,19 @@
+<div class="container">
+    <div [class]="mainContentSize" class="mb-4">
+        <ng-content select="[title]"></ng-content>
+    </div>
+    <div class="d-flex" [ngClass]="{
+        'flex-row': !reverseColumns,
+        'flex-wrap': !reverseColumns,
+        'flex-row-reverse': reverseColumns,
+        'flex-wrap-reverse': reverseColumns}">
+
+        <div id="mainContent" [class]="mainContentSize" class="fix-padding">
+            <ng-content select="[mainContent]"></ng-content>
+        </div>
+
+        <aside id="asideContent" class="w-100" [class]="asideContentSize" [ngClass]="{'pr-0': !reverseColumns}">
+            <ng-content select="[asideContent]"></ng-content>
+        </aside>
+    </div>
+</div>

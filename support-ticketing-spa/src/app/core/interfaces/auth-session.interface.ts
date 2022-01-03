@@ -1,9 +1,9 @@
 import { Token } from "./token.interface";
 
 export interface AuthSession {
+    userId: string | undefined;
+    email: string | undefined;
     firstName: string | undefined;
     lastName: string | undefined;
-    username: string | undefined;
-    email: string | undefined;
     token: Token | undefined;
 }
