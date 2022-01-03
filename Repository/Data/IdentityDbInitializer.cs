@@ -26,11 +26,20 @@ namespace Repository.Data
                     new ApplicationUser
                     {
                         Id = Guid.NewGuid(),
-                        FirstName = "Jose",
-                        LastName = "Acevedo",
+                        FirstName = "Test",
+                        LastName = "User",
                         CreatedDate = DateTime.Now,
                         Email = "test@test.com",
-                        Password = "Password"
+                        Password = "password"
+                    },
+                    new ApplicationUser
+                    {
+                        Id = Guid.NewGuid(),
+                        FirstName = "Test2",
+                        LastName = "User2",
+                        CreatedDate = DateTime.Now,
+                        Email = "test2@test.com",
+                        Password = "password"
                     }
                 };
 

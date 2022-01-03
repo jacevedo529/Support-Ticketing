@@ -25,10 +25,18 @@ namespace Repository.Data
                 {
                     new User
                     {
-                        Email = "jacevedo529@gmail.com",
-                        FirstName = "Jose",
-                        LastName = "Acevedo"
-                    }
+                        Email = "test@test.com",
+                        FirstName = "Test",
+                        LastName = "User",
+                        Role = Role.User
+                    },
+                    new User
+                    {
+                        Email = "test2@test.com",
+                        FirstName = "Test",
+                        LastName = "User",
+                        Role = Role.User
+                    },
                 };
 
                 context.AddRange(users);

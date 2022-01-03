@@ -1,4 +1,4 @@
-namespace REST_CRUD_API
+namespace REST_API
 {
     public class WeatherForecast
     {

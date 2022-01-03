@@ -41,6 +41,7 @@ namespace Services
 
             return new LoginResponse()
             {
+                UserId = user.Id,
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,

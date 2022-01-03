@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Repository.Models.Support;
 using Services.Interfaces;
 
-namespace REST_CRUD_API.Controllers
+namespace REST_API.Controllers
 {
-    [Route("[controller]")]
+    [Authorize]
+    [Route("api/[controller]")]
     public class SupportController : ApiControllerBase
     {
         private readonly ISupportService _supportService;
@@ -16,9 +18,9 @@ namespace REST_CRUD_API.Controllers
 
         // GET: api/<ValuesController>
         [HttpGet]
-        public async Task<IEnumerable<Ticket>> Get([FromQuery] Guid authorId, [FromQuery] Guid? owner, [FromQuery] Status? status)
+        public async Task<IEnumerable<Ticket>> Get([FromQuery] Guid authorId, [FromQuery] Guid? ownerId, [FromQuery] Status? status)
         {
-            var tickets = await _supportService.GetTicketsAsync(authorId, owner, status);
+            var tickets = await _supportService.GetTicketsAsync(authorId, ownerId, status);
             return tickets;
         }
 

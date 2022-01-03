@@ -4,7 +4,7 @@ using Services.Exceptions;
 using Services.Interfaces;
 using Services.Models;
 
-namespace REST_CRUD_API.Controllers
+namespace REST_API.Controllers
 {
     [Route("api/[controller]")]
     public class AuthController : ApiControllerBase
