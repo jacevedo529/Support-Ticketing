@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Repository.Models.Support;
+using REST_API.Helpers;
 using Services.Interfaces;
 
 namespace REST_API.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v1/me/[controller]")]
     public class SupportController : ApiControllerBase
     {
         private readonly ISupportService _supportService;
@@ -16,35 +16,30 @@ namespace REST_API.Controllers
             _supportService = supportService;
         }
 
-        // GET: api/<ValuesController>
         [HttpGet]
-        public async Task<IEnumerable<Ticket>> Get([FromQuery] Guid authorId, [FromQuery] Guid? ownerId, [FromQuery] Status? status)
+        public async Task<IEnumerable<Ticket>> Get([FromQuery] Guid? authorId = null, [FromQuery] Guid? ownerId = null, [FromQuery] Status[]? status = null)
         {
-            var tickets = await _supportService.GetTicketsAsync(authorId, ownerId, status);
+            var tickets = await _supportService.GetTicketsAsync(CurrentUser, authorId, ownerId, status);
             return tickets;
         }
 
-        // GET api/<ValuesController>/5
         [HttpGet("{number}")]
         public async Task<Ticket> Get(int number)
         {
-            var ticket = await _supportService.GetTicketByNumberAsync(number);
+            var ticket = await _supportService.GetTicketByNumberAsync(CurrentUser, number);
             return ticket;
         }
 
-        // POST api/<ValuesController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

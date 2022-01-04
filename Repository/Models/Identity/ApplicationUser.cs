@@ -11,5 +11,6 @@
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime LastLoginDate { get; set; }
+        public Role Role { get; set; } = Role.User;
     }
 }

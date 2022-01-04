@@ -29,8 +29,9 @@ namespace Repository.Data
                         FirstName = "Test",
                         LastName = "User",
                         CreatedDate = DateTime.Now,
-                        Email = "test@test.com",
-                        Password = "password"
+                        Email = "user@support.com",
+                        Password = "password",
+                        Role = Role.User
                     },
                     new ApplicationUser
                     {
@@ -38,8 +39,9 @@ namespace Repository.Data
                         FirstName = "Test2",
                         LastName = "User2",
                         CreatedDate = DateTime.Now,
-                        Email = "test2@test.com",
-                        Password = "password"
+                        Email = "admin@support.com",
+                        Password = "password",
+                        Role= Role.Admin
                     }
                 };
 

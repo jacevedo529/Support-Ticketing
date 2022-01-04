@@ -6,7 +6,7 @@ using Services.Models;
 
 namespace REST_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class AuthController : ApiControllerBase
     {
         private readonly IAuthenticationService _authService;

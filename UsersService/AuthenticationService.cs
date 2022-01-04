@@ -93,5 +93,11 @@ namespace Services
             var context = DbContext;
             return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public async Task<ApplicationUser> GetApplicationUserByIdAsync(Guid id)
+        {
+            var context = DbContext;
+            return await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

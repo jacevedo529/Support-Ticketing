@@ -1,25 +1,27 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpAuthService } from '../http/authentication/http-auth.service';
+import { AuthSession } from '../interfaces/auth-session.interface';
 import { Token } from '../interfaces/token.interface';
 import { LoginRequest } from '../models/authenticate/loginRequest.model';
 import { LoginResponse } from '../models/authenticate/loginResponse.model';
-import { AuthSessionStorageService } from '../services/data-services/auth-session-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly authSessionKey = 'authSession';
   constructor(
     private httpAuthService: HttpAuthService,
-    private authSessionStorageService: AuthSessionStorageService
+    private router: Router
   ) { }
 
   /**
    * Determines if user is logged in by checking if there's an authSession available
    */
   get isLoggedIn(): boolean {
-    return this.authSessionStorageService.get() !== undefined;
+    return this.getAuthToken() !== undefined;
   }
 
   // Store the URL so we can rdirect after logging in
@@ -30,7 +32,10 @@ export class AuthService {
       this.httpAuthService.authenticate(loginRequest).subscribe({
         next: (loginResponse: LoginResponse) => {
           // Store the loginResponse
-          this.authSessionStorageService.set(loginResponse);
+          const authSessionString = JSON.stringify(loginResponse);
+          sessionStorage.setItem(this.authSessionKey, authSessionString);
+
+          // Return the logged in status
           observer.next(this.isLoggedIn);
           observer.complete();
         },
@@ -41,13 +46,25 @@ export class AuthService {
         }
       });
     });
+  }
 
+  public logout() {
+    sessionStorage.removeItem(this.authSessionKey);
+    this.router.navigate(['login'])
+  }
+
+  public getAuthSession(): AuthSession | undefined {
+    // Retrieve authSession from storage
+    const authSessionString = sessionStorage.getItem(this.authSessionKey);
+    let authSession: AuthSession;
+    if (authSessionString) {
+      authSession = JSON.parse(authSessionString);
+      return authSession ?? undefined;
+    }
+    return undefined;
   }
 
   public getAuthToken(): Token | undefined {
-    // Retrieve authSession from storage
-    const authSession = this.authSessionStorageService.get();
-
-    return authSession?.token ?? undefined;
+    return this.getAuthSession()?.token ?? undefined;
   }
 }

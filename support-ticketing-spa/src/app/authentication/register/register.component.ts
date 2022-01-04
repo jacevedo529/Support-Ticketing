@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
   }
 
   public onSubmit() {
-    debugger;
+
     const createAccountRequest: CreateAccountRequest = {
       email: this.email.value,
       password: this.password.value,
@@ -59,10 +59,5 @@ export class RegisterComponent implements OnInit {
         this.spinner.hide('primary');
       }
     });
-  }
-
-  public onLogin() {
-    // Navigate to login page
-    this.router.navigate(['/login']);
   }
 }

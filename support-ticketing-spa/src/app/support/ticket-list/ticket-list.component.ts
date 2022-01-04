@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpTicketsService } from 'src/app/core/http/support/http-tickets.service';
 import { Ticket } from 'src/app/core/models/support/ticket.model';
 
@@ -11,24 +12,26 @@ export class TicketListComponent implements OnInit {
   public tickets: Ticket[] | undefined;
 
   constructor(
-    private httpTicketsService: HttpTicketsService
+    private httpTicketsService: HttpTicketsService,
+    private ngxSpinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
     // TODO: Implement resolver
-
-    this.httpTicketsService.getSupportTickets().subscribe({
+    this.ngxSpinner.show('primary');
+    this.httpTicketsService.getAllSupportTickets().subscribe({
       next: (value: Ticket[]) => {
         this.tickets = value;
-        debugger;
       },
       error: (err) => {
-
+        this.ngxSpinner.hide('primary');
       },
       complete: () => {
-
+        this.ngxSpinner.hide('primary');
       }
     });
+
+    
   }
 
 }

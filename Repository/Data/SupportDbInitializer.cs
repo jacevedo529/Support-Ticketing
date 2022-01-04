@@ -27,15 +27,13 @@ namespace Repository.Data
                     {
                         Email = "test@test.com",
                         FirstName = "Test",
-                        LastName = "User",
-                        Role = Role.User
+                        LastName = "User"
                     },
                     new User
                     {
                         Email = "test2@test.com",
                         FirstName = "Test",
-                        LastName = "User",
-                        Role = Role.User
+                        LastName = "User"
                     },
                 };
 

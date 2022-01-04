@@ -1,14 +1,11 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Repository.Data;
+using REST_API.Middleware;
 using Services;
 using Services.Interfaces;
 using Services.Utilities;
 using System.IO.Compression;
-using Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,10 +47,6 @@ builder.Services.AddResponseCompression(options =>
     options.Providers.Add<BrotliCompressionProvider>();
 });
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options))
-//    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
-
 var app = builder.Build();
 
 
@@ -72,9 +65,8 @@ IdentityDbInitializer.InitializeDatabase(app);
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-//app.UseRouting();
-//app.UseAuthorization();
+// custom jwt auth middleware
+app.UseMiddleware<JwtMiddleware>();
 
 // Response compression
 app.UseResponseCompression();

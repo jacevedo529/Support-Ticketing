@@ -1,7 +1,8 @@
 ﻿namespace Services
 {
-    internal static class Constants
+    // TODO: Move to app settings
+    public static class Constants
     {
-        internal const string TOKEN_SECRET = "RANDOM JWT TOKEN SECRET";
+        public const string TOKEN_SECRET = "RANDOM JWT TOKEN SECRET";
     }
 }

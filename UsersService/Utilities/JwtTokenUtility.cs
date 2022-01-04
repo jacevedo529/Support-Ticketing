@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using IdentityModel;
+using Microsoft.IdentityModel.Tokens;
 using Repository.Models.Identity;
 using Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,7 +17,11 @@ namespace Services.Utilities
             var key = Encoding.ASCII.GetBytes(Constants.TOKEN_SECRET);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Sid, user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] 
+                {   
+                    new Claim(JwtClaimTypes.Id, user.Id.ToString()),
+                    new Claim(JwtClaimTypes.Role, user.Role.ToString())
+                }),
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

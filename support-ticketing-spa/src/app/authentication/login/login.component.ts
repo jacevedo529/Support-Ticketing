@@ -38,10 +38,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  public onCreateAccount() {
-    this.router.navigate(['/register']);
-  }
-
   public onSubmit() {
     const loginRequest: LoginRequest = {
       email: this.email.value,

@@ -4,7 +4,6 @@
     {
         New,
         Open,
-        InProgress,
         Closed
     }
 
@@ -13,11 +12,5 @@
         Low, 
         Medium,
         High
-    }
-
-    public enum Role
-    {
-        User,
-        Admin
     }
 }
