@@ -8,6 +8,7 @@ export class Ticket {
     description: string | undefined;
     authorId: string | undefined;
     createdDate: Date | undefined;
+    lastUpdatedDate: Date | undefined;
     ownerId: string | undefined;
     status: Status | undefined;
     priority: Priority | undefined;

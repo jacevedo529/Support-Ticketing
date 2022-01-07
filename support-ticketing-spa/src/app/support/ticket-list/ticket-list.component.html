@@ -4,12 +4,23 @@
     </div>
 
     <div asideContent>
-
+        <h3>SORT BY</h3>
+        <mat-form-field appearance="fill">
+            <mat-select [(value)]="selectedSortOption">
+                <mat-option [value]="option" *ngFor="let option of sortByOptions">{{ option }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <h3>STATUS</h3>
+        <section>
+            <p *ngFor="let status of statusOptions">
+                <mat-checkbox id="{{status}}" (change)="onStatusChange($event)">{{status}}</mat-checkbox>
+            </p>
+        </section>
     </div>
     <div mainContent>
         <mat-selection-list #ticketsList [multiple]="false">
-            <mat-list-option *ngFor="let ticket of tickets" [value]="ticket.number">
-                <div class="ticket">
+            <mat-list-option *ngFor="let ticket of templateTickets" [value]="ticket.number" class="ticket mb-3">
+                <div>
                     <h4 mat-line>{{ticket.title}}</h4>
                     <div mat-line> {{ticket.number}} - {{ticket.status}} </div>
                 </div>

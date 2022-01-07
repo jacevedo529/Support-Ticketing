@@ -4,6 +4,9 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
+// Custom Extensions
+import './app/core/extensions/array.extensions';
+
 if (environment.production) {
   enableProdMode();
 }

@@ -1,7 +1,6 @@
 export enum Status {
-    New = 'New',
-    Open = 'Open',
-    InProgress = 'InProgress',
+    New = 'New', // Unassigned
+    Open = 'Open', // Assigned & In Progress
     Closed = 'Closed'
 }
 
