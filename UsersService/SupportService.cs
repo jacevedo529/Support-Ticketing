@@ -1,14 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Data;
-using Repository.Models.Identity;
-using Repository.Models.Support;
 using Services.Interfaces;
+using Services.Models.Identity;
+using Services.Models.Support;
+using System.Linq;
 
 namespace Services
 {
     public class SupportService : ISupportService
     {
+        private readonly IMapper _mapper;
+
         private readonly IServiceProvider _serviceProvider;
         public SupportService(IServiceProvider serviceProvider)
         {
@@ -48,7 +52,9 @@ namespace Services
                 query = query.Where(t => status.Contains(t.Status));
 
             // Execute query and return result
-            return await query.AsNoTracking().ToListAsync();
+            var tickets = await query.AsNoTracking().ToListAsync();
+
+            return _mapper.Map<IEnumerable<Ticket>>(tickets);
         }
 
         public async Task<Ticket?> GetTicketByNumberAsync(ApplicationUser currentUser, int ticketNumber)
@@ -61,7 +67,7 @@ namespace Services
 
             var ticket = await context.Tickets.FirstOrDefaultAsync(t => t.Number == ticketNumber);
 
-            return ticket;
+            return _mapper.Map<Ticket>(ticket);
         }
     }
 }

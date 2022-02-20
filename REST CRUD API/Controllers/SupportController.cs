@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Repository.Models.Support;
 using REST_API.Helpers;
 using Services.Interfaces;
+using Services.Models.Support;
+using static Services.Models.Support.Enums;
 
 namespace REST_API.Controllers
 {

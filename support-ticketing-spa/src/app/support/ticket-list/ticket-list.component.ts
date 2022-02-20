@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatRadioChange } from '@angular/material/radio';
+import { ActivatedRoute, Data, Data } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SortByOption } from 'src/app/core/enums/Support/sort-by-options.enum';
 import { HttpTicketsService } from 'src/app/core/http/support/http-tickets.service';
@@ -20,52 +21,62 @@ export class TicketListComponent implements OnInit {
   public selectedSortOption: string = SortByOption.LastUpdatedDate;
   public sortByOptions: string[] = [SortByOption.CreatedDate, SortByOption.LastUpdatedDate];
   public statusOptions: string[] = [Status.New, Status.Open, Status.Closed];
-  public checkedStatusOptions: string[] = [];
+  public selectedStatusOption: string = Status.New;
 
   // Enums
   public Status = Status;
 
   constructor(
-    private httpTicketsService: HttpTicketsService,
-    private ngxSpinner: NgxSpinnerService
+    //private httpTicketsService: HttpTicketsService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    // TODO: Implement resolver
-    this.ngxSpinner.show('primary');
-    this.httpTicketsService.getAllSupportTickets().subscribe({
-      next: (value: Ticket[]) => {
-        this.tickets = value;
-
+    this.activatedRoute.data.subscribe({
+      next: (value: Data) => {
+        this.tickets = value['supportTickets'];
         this.initTemplate();
       },
-      error: (err) => {
-        this.ngxSpinner.hide('primary');
-      },
-      complete: () => {
-        this.ngxSpinner.hide('primary');
-      }
-    });
+      error: () => { },
+      complete: () => { }
+    })
   }
 
-  public onStatusChange(eventArgs: MatCheckboxChange) {
-    const isChecked = eventArgs.checked,
-      status = eventArgs.source.id;
+  // Maintain the checked status and exec filterTickets()
+  // public onStatusChange(eventArgs: MatCheckboxChange) {
+  //   const isChecked = eventArgs.checked,
+  //     status = eventArgs.source.id;
 
-    if (isChecked) {
-      this.checkedStatusOptions.push(status);
-    } else {
-      const statusIndex = this.checkedStatusOptions.findIndex(x => x === status);
-      if (statusIndex !== -1) {
-        this.checkedStatusOptions.splice(statusIndex, 1);
-      }
-    }
+  //   if (isChecked) {
+  //     this.checkedStatusOptions.push(status);
+  //   } else {
+  //     const statusIndex = this.checkedStatusOptions.findIndex(x => x === status);
+  //     if (statusIndex !== -1) {
+  //       this.checkedStatusOptions.splice(statusIndex, 1);
+  //     }
+  //   }
+
+  //   this.filterTickets();
+  // }
+
+  // Template function used to set the checked status
+  // public isCheckedStatus(status: string) {
+  //   return this.checkedStatusOptions.some(x => x === status);
+  // }
+
+  public onStatusSelectionChanged(event: MatRadioChange) {
+    this.selectedStatusOption = event.value;
+    this.filterTickets();
   }
 
   private initTemplate() {
-    debugger;
     this.filterTickets();
     this.sortTickets();
+  }
+
+  private filterTickets() {
+    const filteredTickets = this.tickets?.filter(x => x.status === this.selectedStatusOption);
+    this.templateTickets = filteredTickets;
   }
 
   private sortTickets() {
@@ -74,14 +85,5 @@ export class TicketListComponent implements OnInit {
     } else {
       this.templateTickets?.sortDescendingByKey(x => x.lastUpdatedDate);
     }
-  }
-
-  private filterTickets() {
-    let tickets = this.tickets;
-    this.checkedStatusOptions.forEach(value => {
-      tickets?.filter(x => x.status === value);
-    });
-
-    this.templateTickets = tickets;
   }
 }

@@ -1,6 +1,6 @@
-﻿namespace Services.Models
+﻿namespace Services.Models.Authentication
 {
-    public class LoginResponse
+    public class AuthenticateResponse
     {
         public Guid UserId { get; set; }
         public string FirstName { get; set; }

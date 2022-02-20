@@ -12,7 +12,7 @@ namespace Services.Utilities
     {
         public string GenerateJwtToken(ApplicationUser user)
         {
-            // generate token that is valid for 7 days
+            // generate token that is valid for 30 mins
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Constants.TOKEN_SECRET);
             var tokenDescriptor = new SecurityTokenDescriptor

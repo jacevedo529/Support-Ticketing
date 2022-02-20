@@ -3,3 +3,15 @@
   border-radius: .25rem;
   padding: 1rem;
 }
+
+mat-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+
+  mat-radio-button {
+    margin: .3rem 0;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+}

@@ -18,7 +18,7 @@ namespace REST_API.Controllers
 
         // TODO: Handle exceptions
         [HttpPost("Login")]
-        public async Task<IActionResult> Authenticate(LoginRequest request)
+        public async Task<IActionResult> AuthenticateAsync(AuthenticateRequest request)
         {
             //LoginResponse? response = default;
 
@@ -36,10 +36,10 @@ namespace REST_API.Controllers
             //    throw;
             //}
 
-            var response = await _authService.LoginAsync(request);
+            var response = await _authService.AuthenticateAsync(request);
 
             if (response == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "Email or password is incorrect" });
 
             return Ok(response);
         }

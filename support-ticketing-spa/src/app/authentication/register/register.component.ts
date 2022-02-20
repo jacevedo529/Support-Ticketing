@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpAuthService } from 'src/app/core/http/authentication/http-auth.service';
 import { CreateAccountRequest } from 'src/app/core/models/authenticate/createAccountRequest.model';
-import { MaterialErrorStateMatcher } from 'src/app/core/utilities/MaterialErrorStateMatcher';
+import { MaterialErrorStateMatcher } from 'src/app/core/utilities/materialErrorStateMatcher';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +13,7 @@ import { MaterialErrorStateMatcher } from 'src/app/core/utilities/MaterialErrorS
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  // Form
   public createAccountFormGroup: FormGroup = new FormGroup({
     email: new FormControl('', { validators: [Validators.required, Validators.email], updateOn: "blur" }),
     password: new FormControl('', { validators: [Validators.required, Validators.minLength(8), Validators.maxLength(100)], updateOn: "blur" }),
@@ -21,6 +22,7 @@ export class RegisterComponent implements OnInit {
   });
   public matcher = new MaterialErrorStateMatcher();
 
+  // Props
   get email(): any { return this.createAccountFormGroup.get('email'); }
   get password(): any { return this.createAccountFormGroup.get('password'); }
   get firstName(): any { return this.createAccountFormGroup.get('firstName'); }

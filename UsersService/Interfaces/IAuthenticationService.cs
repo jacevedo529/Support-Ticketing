@@ -1,12 +1,12 @@
-﻿using Repository.Models.Identity;
-using Services.Models;
+﻿using Services.Models.Authentication;
+using Services.Models.Identity;
 
 namespace Services.Interfaces
 {
     public interface IAuthenticationService
     {
         Task<ApplicationUser> GetApplicationUserByIdAsync(Guid id);
-        Task<LoginResponse> LoginAsync(LoginRequest request);
+        Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest request);
         Task<CreateAccountResponse> CreateAccountAsync(CreateAccountRequest request);
     }
 }

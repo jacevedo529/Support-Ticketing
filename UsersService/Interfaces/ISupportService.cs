@@ -1,5 +1,5 @@
-﻿using Repository.Models.Identity;
-using Repository.Models.Support;
+﻿using Services.Models.Identity;
+using Services.Models.Support;
 
 namespace Services.Interfaces
 {

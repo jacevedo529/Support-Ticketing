@@ -1,6 +1,6 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from '../guards/auth.service';
 
 @Injectable({
@@ -35,6 +35,7 @@ export class AuthInterceptorService implements HttpInterceptor {
         headers: req.headers.set('Authorization', `Bearer ${authToken?.value as string}`)
       });
 
+      // TODO: Handle 401 responses using refreshToken
       // send cloned request with header to the next handler.
       return next.handle(authReq);
     }

@@ -12,6 +12,7 @@ import { HeadersComponent } from './components/headers/headers.component';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
 
 // Imported and Exported collections
 const modules = [
@@ -21,12 +22,13 @@ const modules = [
   MatButtonModule,
   MatFormFieldModule,
   MatInputModule,
-  //MatIconModule,
+  MatIconModule,
 
   // Consider moving to support module
   MatListModule,
   MatSelectModule,
-  MatCheckboxModule,
+  //MatCheckboxModule,
+  MatRadioModule,
 
   NgxSpinnerModule
 ];

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Services.Models
+namespace Services.Models.Authentication
 {
     public class CreateAccountRequest
     {

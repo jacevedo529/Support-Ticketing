@@ -12,10 +12,20 @@
         </mat-form-field>
         <h3>STATUS</h3>
         <section>
-            <p *ngFor="let status of statusOptions">
-                <mat-checkbox id="{{status}}" (change)="onStatusChange($event)">{{status}}</mat-checkbox>
-            </p>
+            <mat-radio-group [(ngModel)]="selectedStatusOption" (change)="onStatusSelectionChanged($event)">
+                <mat-radio-button *ngFor="let status of statusOptions" [checked]="status === selectedStatusOption"
+                    [value]="status">
+                    {{status}}
+                </mat-radio-button>
+            </mat-radio-group>
         </section>
+
+        <h3>ASSIGN</h3>
+        <mat-form-field appearance="fill">
+            <mat-select [(value)]="selectedSortOption">
+                <mat-option [value]="option" *ngFor="let option of sortByOptions">{{ option }}</mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
     <div mainContent>
         <mat-selection-list #ticketsList [multiple]="false">
@@ -23,6 +33,10 @@
                 <div>
                     <h4 mat-line>{{ticket.title}}</h4>
                     <div mat-line> {{ticket.number}} - {{ticket.status}} </div>
+                    <div mat-line> created: {{ticket.createdDate | date:'medium' }} </div>
+                    <div *ngIf="ticket.lastUpdatedDate" mat-line> updated: {{ticket.lastUpdatedDate | date:'medium'}}
+                    </div>
+                    <div mat-line> assigned to: {{ticket.ownerId}}</div>
                 </div>
             </mat-list-option>
         </mat-selection-list>

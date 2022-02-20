@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/guards/auth.service';
 import { LoginRequest } from 'src/app/core/models/authenticate/loginRequest.model';
-import { MaterialErrorStateMatcher } from 'src/app/core/utilities/MaterialErrorStateMatcher';
+import { MaterialErrorStateMatcher } from 'src/app/core/utilities/materialErrorStateMatcher';
 
 @Component({
   selector: 'app-login',
@@ -13,14 +13,16 @@ import { MaterialErrorStateMatcher } from 'src/app/core/utilities/MaterialErrorS
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  // Form
   public loginFormGroup: FormGroup = new FormGroup({
-    email: new FormControl('', { validators: [Validators.required, Validators.email], updateOn: "blur" }),
-    password: new FormControl('', { validators: [Validators.required, Validators.minLength(8), Validators.maxLength(100)], updateOn: "blur" })
+    email: new FormControl('', { validators: [Validators.required, Validators.email], updateOn: "submit" }),
+    password: new FormControl('', { validators: [Validators.required, Validators.minLength(8), Validators.maxLength(100)], updateOn: "submit" })
   });
-  public matcher = new MaterialErrorStateMatcher();
 
-  get email(): any { return this.loginFormGroup.get('email'); }
-  get password(): any { return this.loginFormGroup.get('password'); }
+  // Props
+  public hide = true;
+  public get email(): any { return this.loginFormGroup.get('email'); }
+  public get password(): any { return this.loginFormGroup.get('password'); }
 
   constructor(
     private title: Title,

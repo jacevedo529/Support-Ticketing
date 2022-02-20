@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Repository.Models.Identity;
+using Services.Models.Identity;
 
 namespace REST_API.Controllers
 {
